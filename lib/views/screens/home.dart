@@ -11,19 +11,27 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  AuthServices _auth = AuthServices();
+  final AuthServices _auth = AuthServices();
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-        appBar: AppBar(
-          actions: [
-            TextButton(
-                onPressed: () {
-                  context.read<AuthProvider>().logout(context);
-                },
-                child: Text("logout"))
-          ],
+      appBar: AppBar(
+        actions: [
+          TextButton(
+              onPressed: () {
+                context.read<AuthProvider>().logout(context);
+              },
+              child: Text("logout"))
+        ],
+      ),
+      body: Center(),
+      floatingActionButton: MaterialButton(
+        minWidth: screenWidth * 0.8,
+        onPressed: (){
+
+        }
         ),
-        body: Center());
+    );
   }
 }
