@@ -1,41 +1,178 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: unused_import
 
-class CustomModalSheet extends StatelessWidget {
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:task_mate/auth/auth.dart';
+import 'package:task_mate/database/database.dart';
+import 'package:task_mate/models/task.dart';
+import 'package:task_mate/utils/kTextStyle.dart';
+import 'package:task_mate/views/screens/home.dart';
+
+class CustomModalSheet extends StatefulWidget {
   TextEditingController titlecontroller;
   TextEditingController taskcontroller;
-  CustomModalSheet({super.key, required this.titlecontroller, required this.taskcontroller});
+  TextEditingController dateTimecontroller;
+  ScrollController scrollcontroller;
+
+  CustomModalSheet({
+    super.key,
+    required this.scrollcontroller,
+    required this.titlecontroller,
+    required this.taskcontroller,
+    required this.dateTimecontroller,
+  });
+
+  @override
+  State<CustomModalSheet> createState() => _CustomModalSheetState();
+}
+
+class _CustomModalSheetState extends State<CustomModalSheet> {
+  DateTime? _selectedDateTime;
+  DatabaseService database = DatabaseService();
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedDateTime = DateTime.now();
+  }
+
+  Future<void> _pickDateTime(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _selectedDateTime ?? DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2100),
+    );
+
+    if (pickedDate == null) return;
+
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(_selectedDateTime!),
+    );
+
+    if (pickedTime == null) return;
+
+    setState(() {
+      _selectedDateTime = DateTime(
+        pickedDate.year,
+        pickedDate.month,
+        pickedDate.day,
+        pickedTime.hour,
+        pickedTime.minute,
+      );
+
+      widget.dateTimecontroller.text =
+          DateFormat('yyyy/MM/dd HH:mm').format(_selectedDateTime!);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Container(
-      height: screenHeight * 0.6,
+      height: screenHeight * 0.5,
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
+        color: Colors.white,
         borderRadius: BorderRadius.circular(8.0),
       ),
-      child: Column(
-        children: [
-          TextField(
-            controller: titlecontroller,
-            decoration: InputDecoration(
-              labelText: 'Title',
-              hintText: 'Add task name here',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 6),
+        child: ListView(
+          controller: widget.scrollcontroller,
+          children: [
+            TextField(
+              controller: widget.titlecontroller,
+              decoration: InputDecoration(
+                label: Text('Title'),
+                floatingLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+                hintText: 'Add task name here',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
               ),
             ),
-          ),
-          TextField(
-            controller: taskcontroller,
-            decoration: InputDecoration(
-              labelText: 'Task Description',
-              hintText: 'Description',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0),
+            const SizedBox(height: 10),
+            TextField(
+              cursorColor: Color(0xFF080708),
+              maxLines: 3,
+              controller: widget.taskcontroller,
+              decoration: InputDecoration(
+                focusColor: Color(0xFF080708),
+                label: Text('Task Description'),
+                floatingLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+                alignLabelWithHint: true,
+                hintText: 'Description',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
               ),
             ),
-          ),
+            const SizedBox(height: 10),
+
+            /// DateTime Field (Tappable)
+            GestureDetector(
+              onTap: () => _pickDateTime(context),
+              child: AbsorbPointer(
+                child: TextField(
+                  cursorColor: Color(0xFF080708),
+                  controller: widget.dateTimecontroller,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    focusColor: Color(0xff080708),
+                    labelText: 'Due Date & Time',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    suffixIcon: const Icon(Icons.calendar_today),
+                  ),
+                ),
+              ),
+            ),
+            Row(
+              children: [
+                FilledButton(
+                  onPressed: () async {
+                    await database.createTask(
+                      Task(
+                        taskId: auth.currentUser!.uid,
+                        title: titleController.text,
+                        taskDetail: taskDetailController.text,
+                        subTasks: [],
+                        dateCreated: DateTime.parse(createdTimeController.text),
+                      ),
+                    );
+                  },
+                  style: FilledButton.styleFrom(
+                    backgroundColor: Color(0xFF080708),
+                    minimumSize: Size(60, 40),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  child: Text("Add", style: kTextStyle(color: Colors.white)),
+                ),
+                const SizedBox(width: 20),
+                FilledButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  style: FilledButton.styleFrom(
+                    minimumSize: Size(60, 40),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  child: Text("cancel"),
+                ),
+              ],
+            )
           ],
+        ),
       ),
     );
   }

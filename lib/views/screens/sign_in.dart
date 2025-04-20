@@ -5,7 +5,6 @@ import 'package:task_mate/auth/auth.dart';
 import 'package:task_mate/providers/auth_provider.dart';
 import 'package:task_mate/utils/kTextStyle.dart';
 import 'package:task_mate/utils/namedrouting.dart';
-import 'package:task_mate/views/screens/home.dart';
 
 import 'signup.dart';
 
@@ -38,9 +37,11 @@ class _SignInPageState extends State<SignInPage> {
               const SizedBox(height: 120),
               Text("Sign in", style: kTextStyle(size: 40)),
               TextField(
+                cursorColor: Color(0xFF565264),
                 controller: emailController,
                 decoration: InputDecoration(
                     labelText: 'Email',
+                    focusColor: Color(0xFF565264),
                     hintText: 'example123@gmail.com',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -49,11 +50,14 @@ class _SignInPageState extends State<SignInPage> {
               const SizedBox(height: 15),
               TextField(
                 controller: passwordController,
+                cursorColor: Color(0xFF565264),
                 decoration: InputDecoration(
+                  focusColor: Color(0xFF565264),
                     labelText: 'Password',
                     hintText: 'xxxxxx',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      
+                      borderRadius: BorderRadius.circular(6),
                     )),
               ),
               const SizedBox(height: 15),
@@ -66,10 +70,13 @@ class _SignInPageState extends State<SignInPage> {
                       );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
+                  backgroundColor: Color(0xFF071E22),
                   minimumSize: Size(400, 40),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5)
+                  )
                 ),
-                child: Text("Sign in"),
+                child: Text("Sign in", style: kTextStyle(color: Colors.white),),
               ),
               const SizedBox(height: 10),
               RichText(

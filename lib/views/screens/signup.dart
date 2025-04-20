@@ -43,7 +43,9 @@ class _SignupPageState extends State<SignupPage> {
               const SizedBox(height: 40),
               TextField(
                 controller: usernameController,
+                cursorColor: Color(0xFF071E22),
                 decoration: InputDecoration(
+                  focusColor: Color(0xFF071E22),
                     labelText: 'Username',
                     hintText: 'E.g. John Doe',
                     border: OutlineInputBorder(
@@ -53,7 +55,9 @@ class _SignupPageState extends State<SignupPage> {
               const SizedBox(height: 15),
               TextField(
                 controller: emailController,
+                cursorColor: Color(0xFF071E22),
                 decoration: InputDecoration(
+                  focusColor: Color(0xFF071E22),
                   labelText: 'Email',
                   hintText: 'example123@gmail.com',
                   border: OutlineInputBorder(
@@ -63,8 +67,10 @@ class _SignupPageState extends State<SignupPage> {
               ),
               const SizedBox(height: 15),
               TextField(
+                cursorColor: Color(0xFF071E22),
                 controller: passwordController,
                 decoration: InputDecoration(
+                  focusColor: Color(0xFF071E22),
                     labelText: 'Password',
                     hintText: 'xxxxxx',
                     border: OutlineInputBorder(
@@ -82,11 +88,11 @@ class _SignupPageState extends State<SignupPage> {
                       );
                 },
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Color(0xFF071E22),
                     minimumSize: Size(400, 50),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8))),
-                child: Text("Sign Up"),
+                        borderRadius: BorderRadius.circular(5))),
+                child: Text("Sign Up", style: kTextStyle(color: Colors.white)),
               ),
               const SizedBox(height: 10),
               RichText(

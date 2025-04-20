@@ -22,13 +22,18 @@ class DatabaseService {
     await taskDoc.set(task.toMap());
   }
 
+  Future createSubTask(SubTask subTask) async {
+    final subtaskDoc = FirebaseFirestore.instance.collection("subtasks").doc();
+    await subtaskDoc.set(subTask.toMap());
+  }
+
   Stream<List<Task>> readTasks() {
     try {
       if (_auth.currentUser == null) {
         return Stream.value([]);
       }
       final tasks = FirebaseFirestore.instance.collection("tasks");
-      return tasks.orderBy("completionTime", descending: true).snapshots().map(
+      return tasks.orderBy("dateCreated", descending: true).snapshots().map(
             (snapshot) => snapshot.docs
                 .map(
                   (doc) => Task.fromMap(
@@ -42,17 +47,54 @@ class DatabaseService {
     }
   }
 
-  Future updateTask(
-      Task task, String title, String taskDetails, String uid) async {
+  Stream<List<SubTask>> readSubTasks() {
+    try {
+      if (_auth.currentUser == null) {
+        return Stream.value([]);
+      }
+      final subtasks = FirebaseFirestore.instance.collection('subtasks');
+      return subtasks
+          .orderBy('completionTime', descending: true)
+          .snapshots()
+          .map(
+            (snapshot) => snapshot.docs.map(
+              (doc) => SubTask.fromMap(
+                doc.data(),
+              ),
+            ).toList(),
+          );
+    } on Exception catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future updateTask(Task task, String title, String id) async {
+    final update = task.copyWith(title: title, taskId: id);
+    final mytasks =
+        FirebaseFirestore.instance.collection("tasks").doc(update.taskId);
+    await mytasks.update(update.toMap());
+  }
+
+  Future updateSubTask(
+      SubTask subtask, String title, String taskDetail, String uid) async {
     var updatedTask =
-        task.copyWith(title: title, taskDetails: taskDetails, id: uid);
-    final myTask =
-        FirebaseFirestore.instance.collection("tasks").doc(updatedTask.id);
+        subtask.copyWith(title: title, taskDetail: taskDetail, subTaskId: uid);
+    final myTask = FirebaseFirestore.instance
+        .collection("subtasks")
+        .doc(updatedTask.subTaskId);
     await myTask.update(updatedTask.toMap());
   }
 
   Future deleteTask(Task task) async {
-    var mytask = FirebaseFirestore.instance.collection("tasks").doc(task.id);
+    var mytask =
+        FirebaseFirestore.instance.collection("tasks").doc(task.taskId);
+    await mytask.delete();
+  }
+
+  Future deleteSubTask(SubTask subtask) async {
+    var mytask = FirebaseFirestore.instance
+        .collection("subtasks")
+        .doc(subtask.subTaskId);
     await mytask.delete();
   }
 

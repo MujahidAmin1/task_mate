@@ -1,27 +1,81 @@
 class Task {
-  String? id;
+  String? taskId;
   String? title;
-  String? taskDetails;
+  String? taskDetail;
+  DateTime? dateCreated;
+  List<SubTask>? subTasks;
+  Task({
+    this.taskId,
+    required this.title,
+    required this.taskDetail,
+    required this.subTasks,
+    required this.dateCreated,
+  });
+  Task copyWith({
+    String? taskId,
+    String? title,
+    String? taskDetail,
+    DateTime? dateCreated,
+    List<SubTask>? subTasks,
+  }) {
+    return Task(
+      taskId: taskId ?? this.taskId,
+      title: title ?? this.title,
+      taskDetail: taskDetail ?? this.taskDetail,
+      subTasks: subTasks ?? this.subTasks,
+      dateCreated: dateCreated ?? this.dateCreated,
+    );
+  }
+
+  factory Task.fromMap(Map<String, dynamic> map) {
+    return Task(
+      taskId: map['taskId'],
+      title: map['title'],
+      taskDetail: map['taskDetail'],
+      dateCreated: map['dateCreated'],
+      subTasks: map['subTasks'] != null
+          ? List<SubTask>.from(
+              map['subTasks'].map((x) => SubTask.fromMap(x)),
+            )
+          : [],
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'taskId': taskId,
+      'title': title,
+      'taskDetail': taskDetail,
+      'dateCreated': dateCreated,
+      'subTasks': subTasks?.map((x) => x.toMap()).toList(),
+    };
+  }
+}
+
+class SubTask {
+  String? subTaskId;
+  String? title;
+  String? taskDetail;
   bool? isCompleted;
   DateTime? completionTime;
 
-  Task({
-    this.id,
+  SubTask({
+    this.subTaskId,
     required this.title,
-    required this.taskDetails,
+    required this.taskDetail,
     required this.isCompleted,
     required this.completionTime,
   });
-  Task copyWith({
-    String? id,
+  SubTask copyWith({
+    String? subTaskId,
     String? title,
-    String? taskDetails,
+    String? taskDetail,
     bool? isCompleted,
     DateTime? completionTime,
   }) {
-    return Task(
+    return SubTask(
       title: title,
-      taskDetails: taskDetails,
+      taskDetail: taskDetail,
       isCompleted: isCompleted,
       completionTime: completionTime,
     );
@@ -29,20 +83,20 @@ class Task {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
+      'subTaskId': subTaskId,
       'title': title,
-      'taskDetails': taskDetails,
+      'taskDetail': taskDetail,
       'isCompleted': isCompleted,
       'completionTime': completionTime!.toIso8601String(),
     };
   }
 
-  /// Convert Firestore document to a Task object
-  factory Task.fromMap(Map<String, dynamic> map) {
-    return Task(
-      id: map['id'] ?? '',
+  /// Convert Firestore document to a SubTask object
+  factory SubTask.fromMap(Map<String, dynamic> map) {
+    return SubTask(
+      subTaskId: map['subTaskId'] ?? '',
       title: map['title'] ?? '',
-      taskDetails: map['taskDetails'] ?? '',
+      taskDetail: map['taskDetail'] ?? '',
       isCompleted: map['isCompleted'] ?? false,
       completionTime: DateTime.parse(map['completionTime']),
     );
