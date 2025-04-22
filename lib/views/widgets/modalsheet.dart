@@ -13,11 +13,9 @@ class CustomModalSheet extends StatefulWidget {
   TextEditingController titlecontroller;
   TextEditingController taskcontroller;
   TextEditingController dateTimecontroller;
-  ScrollController scrollcontroller;
 
   CustomModalSheet({
     super.key,
-    required this.scrollcontroller,
     required this.titlecontroller,
     required this.taskcontroller,
     required this.dateTimecontroller,
@@ -36,8 +34,9 @@ class _CustomModalSheetState extends State<CustomModalSheet> {
   void initState() {
     super.initState();
     _selectedDateTime = DateTime.now();
+    widget.dateTimecontroller.text =
+        DateFormat('MMM dd, yyyy - hh:mm a').format(_selectedDateTime!);
   }
-
   Future<void> _pickDateTime(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -65,7 +64,7 @@ class _CustomModalSheetState extends State<CustomModalSheet> {
       );
 
       widget.dateTimecontroller.text =
-          DateFormat('yyyy/MM/dd HH:mm').format(_selectedDateTime!);
+          DateFormat('MMM dd, yyyy - hh:mm a').format(_selectedDateTime!);
     });
   }
 
@@ -74,7 +73,8 @@ class _CustomModalSheetState extends State<CustomModalSheet> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Container(
-      height: screenHeight * 0.5,
+      width: MediaQuery.of(context).size.width,
+      height: screenHeight * 0.65,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -83,7 +83,6 @@ class _CustomModalSheetState extends State<CustomModalSheet> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 6),
         child: ListView(
-          controller: widget.scrollcontroller,
           children: [
             TextField(
               controller: widget.titlecontroller,
@@ -137,15 +136,21 @@ class _CustomModalSheetState extends State<CustomModalSheet> {
               children: [
                 FilledButton(
                   onPressed: () async {
-                    await database.createTask(
-                      Task(
-                        taskId: auth.currentUser!.uid,
-                        title: titleController.text,
-                        taskDetail: taskDetailController.text,
-                        subTasks: [],
-                        dateCreated: DateTime.parse(createdTimeController.text),
-                      ),
-                    );
+                    try {
+                      await database.createTask(
+                        Task(
+                          taskId: null,
+                          id: auth.currentUser!.uid,
+                          title: titleController.text,
+                          taskDetail: taskDetailController.text,
+                          subTasks: [],
+                          dateCreated: _selectedDateTime,
+                        ),
+                      );
+                      Navigator.pop(context);
+                    } on Exception catch (e) {
+                      throw Exception(e);
+                    }
                   },
                   style: FilledButton.styleFrom(
                     backgroundColor: Color(0xFF080708),

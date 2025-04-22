@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Task {
+  String? id;
   String? taskId;
   String? title;
   String? taskDetail;
@@ -6,12 +9,14 @@ class Task {
   List<SubTask>? subTasks;
   Task({
     this.taskId,
+    this.id,
     required this.title,
     required this.taskDetail,
     required this.subTasks,
     required this.dateCreated,
   });
   Task copyWith({
+    String? id,
     String? taskId,
     String? title,
     String? taskDetail,
@@ -19,6 +24,7 @@ class Task {
     List<SubTask>? subTasks,
   }) {
     return Task(
+      id: id ?? this.id,
       taskId: taskId ?? this.taskId,
       title: title ?? this.title,
       taskDetail: taskDetail ?? this.taskDetail,
@@ -29,10 +35,11 @@ class Task {
 
   factory Task.fromMap(Map<String, dynamic> map) {
     return Task(
+      id: map['id'],
       taskId: map['taskId'],
       title: map['title'],
       taskDetail: map['taskDetail'],
-      dateCreated: map['dateCreated'],
+      dateCreated: (map['dateCreated'] as Timestamp).toDate(),
       subTasks: map['subTasks'] != null
           ? List<SubTask>.from(
               map['subTasks'].map((x) => SubTask.fromMap(x)),
@@ -43,6 +50,7 @@ class Task {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'taskId': taskId,
       'title': title,
       'taskDetail': taskDetail,
@@ -53,18 +61,12 @@ class Task {
 }
 
 class SubTask {
-  String? subTaskId;
-  String? title;
   String? taskDetail;
   bool? isCompleted;
-  DateTime? completionTime;
 
   SubTask({
-    this.subTaskId,
-    required this.title,
     required this.taskDetail,
     required this.isCompleted,
-    required this.completionTime,
   });
   SubTask copyWith({
     String? subTaskId,
@@ -74,31 +76,23 @@ class SubTask {
     DateTime? completionTime,
   }) {
     return SubTask(
-      title: title,
       taskDetail: taskDetail,
       isCompleted: isCompleted,
-      completionTime: completionTime,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'subTaskId': subTaskId,
-      'title': title,
       'taskDetail': taskDetail,
       'isCompleted': isCompleted,
-      'completionTime': completionTime!.toIso8601String(),
     };
   }
 
   /// Convert Firestore document to a SubTask object
   factory SubTask.fromMap(Map<String, dynamic> map) {
     return SubTask(
-      subTaskId: map['subTaskId'] ?? '',
-      title: map['title'] ?? '',
       taskDetail: map['taskDetail'] ?? '',
       isCompleted: map['isCompleted'] ?? false,
-      completionTime: DateTime.parse(map['completionTime']),
     );
   }
 }
