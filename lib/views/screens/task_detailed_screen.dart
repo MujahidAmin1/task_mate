@@ -84,7 +84,16 @@ class _TaskDetailedScreenState extends State<TaskDetailedScreen> {
               const SizedBox(height: 10),
               ...subtasks.map((subtask) => Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: SubTaskTile(task: subtask.taskDetail),
+                    child: SubTaskTile(
+                      subtask: subtask,
+                      onChanged: (bool? value) async {
+                        subtask.isCompleted = value ?? false;
+                        
+                          await database.createSubTask(
+                              widget.task!.taskId!, widget.task!.subTasks!);
+                        setState(() {});
+                      },
+                    ),
                   )),
             ]),
           ),

@@ -50,7 +50,6 @@ class DatabaseService {
     }
   }
 
-
   Future updateTask(Task task, String title, String id) async {
     final update = task.copyWith(title: title, taskId: id);
     final mytasks =
@@ -58,16 +57,21 @@ class DatabaseService {
     await mytasks.update(update.toMap());
   }
 
-
-
   Future deleteTask(Task task) async {
     var mytask =
         FirebaseFirestore.instance.collection("tasks").doc(task.taskId);
     await mytask.delete();
   }
+
   Future<User> fetchUser(String uid) async {
     final userDoc =
         await FirebaseFirestore.instance.collection("users").doc(uid).get();
     return User.fromMap(userDoc.data()!);
+  }
+
+  Future<String>? fetchUsername(String uid) async {
+    final userDoc =
+        await FirebaseFirestore.instance.collection("users").doc(uid).get();
+    return userDoc.data()!['username'];
   }
 }

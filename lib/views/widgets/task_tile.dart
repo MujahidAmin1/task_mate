@@ -1,9 +1,25 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:task_mate/models/task.dart';
 import 'package:task_mate/utils/kTextStyle.dart';
-import 'package:intl/intl.dart';
 import 'package:task_mate/utils/date_formatter.dart';
+import 'package:task_mate/views/screens/home.dart';
+
+final random = Random();
+
+Color getRandomColor() {
+  return colorOptions[random.nextInt(colorOptions.length)];
+}
+final List<Color> colorOptions = [
+  Color(0xFF3C91E6), // Sky Blue
+  Color(0xFFA2D729), // Bright Green
+  Color(0xFFFA824C), // Orange
+  Color(0xFF080708), // Black
+  Color(0xFF3772FF), // Bright Blue
+  Color(0xFFDF2935), // Red
+  Color(0xFFFDCA40), // Yellow
+];
 
 class TaskTile extends StatelessWidget {
   final String? title;
@@ -26,7 +42,7 @@ class TaskTile extends StatelessWidget {
           color: Colors.white54,
           borderRadius: BorderRadius.circular(8.0),
           border: Border(
-            bottom: BorderSide(color: Colors.red, width: 5),
+            bottom: BorderSide(color: getRandomColor(), width: 5),
           ),
         ),
         child: Padding(
@@ -49,13 +65,14 @@ class TaskTile extends StatelessWidget {
   }
 }
 
-// ignore: must_be_immutable
 class SubTaskTile extends StatelessWidget {
-  String? task;
+  SubTask? subtask;
+  final ValueChanged<bool?> onChanged;
 
   SubTaskTile({
     super.key,
-    required this.task,
+    required this.subtask,
+    required this.onChanged,
   });
 
   @override
@@ -66,16 +83,31 @@ class SubTaskTile extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
           border: Border(
-            left: BorderSide(color: Colors.cyan, width: 5),
+            left: BorderSide(color: getRandomColor(), width: 5),
           ),
+          color: Color(0xFFfafffd), // tile background
         ),
         height: 70,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(task!, style: kTextStyle()),
-              // Radio(value: value, groupValue: groupValue, onChanged: (_) {})
+              Expanded(
+                child: Text(
+                  subtask!.taskDetail!,
+                  style: kTextStyle(),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Checkbox(
+                value: subtask!.isCompleted,
+                onChanged: onChanged,
+                activeColor: Color(0xFFa2d729), // green
+                checkColor: Color(0xFF342e37), // inside checkmark color
+                shape: CircleBorder(),
+                splashRadius: 20,
+              ),
             ],
           ),
         ),

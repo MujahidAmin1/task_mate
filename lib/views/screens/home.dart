@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart' hide AuthProvider;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_mate/database/database.dart';
@@ -37,13 +38,26 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     DatabaseService databaseService = DatabaseService();
+    FirebaseAuth auth = FirebaseAuth.instance;
     double screenWidth = MediaQuery.of(context).size.width;
+    var username = databaseService.fetchUsername(auth.currentUser!.uid);
     return Scaffold(
       backgroundColor: Color(0xFF342e37),
       appBar: AppBar(
         foregroundColor: Color(0xFFfafffd),
         backgroundColor: Color(0xff342e37),
-        title: Text("Tasks"),
+        title: FutureBuilder<String>(
+          future: username,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Text("Loading...");
+            } else if (snapshot.hasError) {
+              return const Text("Error");
+            } else {
+              return Text(snapshot.data ?? "No username");
+            }
+          },
+        ),
         actions: [
           TextButton(
               onPressed: () {
