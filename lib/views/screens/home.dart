@@ -80,8 +80,10 @@ class _MyHomePageState extends State<MyHomePage> {
             return const Center(child: Text('No Tasks available.'));
           }
           List<Task> tasks = snapshot.data!;
-          List<List<SubTask>> subtask =
-              tasks.map((task) => task.subTasks!).toList();
+          List<SubTask> allSubTasks = tasks
+              .where((task) => task.subTasks != null)
+              .expand((task) => task.subTasks!).where((e)=>e.isCompleted ==true)
+              .toList();
           return ListView(
             children: [
               SizedBox(
@@ -108,18 +110,18 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                 ),
               ),
-              // ListView.builder(
-              //   itemCount: subtask.length,
-              //   itemBuilder: (context, index) {
-              //     var subtasks = tasks.where(
-              //         (task) => task.subTasks![index].isCompleted == true).toList();
-              //     return SubTaskTile(
-              //       title: subtasks[index].subTasks![index].title,
-              //       task: subtasks[index].subTasks![index].taskDetail,
-              //       completionTime: subtasks[index].subTasks![index].completionTime,
-              //     );
-              //   },
-              // ),
+              SizedBox(
+                height: 400,
+                child: ListView.builder(
+                  itemCount: allSubTasks.length,
+                  itemBuilder: (context, index) {
+                    return SubTaskTile(
+                      subtask: allSubTasks[index],
+                      onChanged: (bool? value) {},
+                    );
+                  },
+                ),
+              ),
             ],
           );
         },

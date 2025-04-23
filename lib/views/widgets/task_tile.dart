@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:task_mate/models/task.dart';
 import 'package:task_mate/utils/kTextStyle.dart';
 import 'package:task_mate/utils/date_formatter.dart';
-import 'package:task_mate/views/screens/home.dart';
 
 final random = Random();
 
@@ -66,10 +65,10 @@ class TaskTile extends StatelessWidget {
 }
 
 class SubTaskTile extends StatelessWidget {
-  SubTask? subtask;
+  final SubTask? subtask;
   final ValueChanged<bool?> onChanged;
 
-  SubTaskTile({
+  const SubTaskTile({
     super.key,
     required this.subtask,
     required this.onChanged,
@@ -96,7 +95,10 @@ class SubTaskTile extends StatelessWidget {
               Expanded(
                 child: Text(
                   subtask!.taskDetail!,
-                  style: kTextStyle(),
+                  style: TextStyle(
+                    fontSize: 20,
+                    decoration: subtask!.isCompleted! ? TextDecoration.lineThrough : null
+                  ),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -107,6 +109,7 @@ class SubTaskTile extends StatelessWidget {
                 checkColor: Color(0xFF342e37), // inside checkmark color
                 shape: CircleBorder(),
                 splashRadius: 20,
+                
               ),
             ],
           ),
