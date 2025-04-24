@@ -37,6 +37,7 @@ class _CustomModalSheetState extends State<CustomModalSheet> {
     widget.dateTimecontroller.text =
         DateFormat('MMM dd, yyyy - hh:mm a').format(_selectedDateTime!);
   }
+
   Future<void> _pickDateTime(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -132,6 +133,7 @@ class _CustomModalSheetState extends State<CustomModalSheet> {
                 ),
               ),
             ),
+            const SizedBox(height: 10),
             Row(
               children: [
                 FilledButton(
@@ -153,26 +155,28 @@ class _CustomModalSheetState extends State<CustomModalSheet> {
                     }
                   },
                   style: FilledButton.styleFrom(
-                    backgroundColor: Color(0xFF080708),
+                    backgroundColor: Color(0xFF3772FF),
                     minimumSize: Size(60, 40),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
                   ),
-                  child: Text("Add", style: kTextStyle(color: Colors.white)),
+                  child: Text("Add",
+                      style: kTextStyle(color: Colors.white, size: 15)),
                 ),
-                const SizedBox(width: 20),
+                const SizedBox(width: 10),
                 FilledButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
                   style: FilledButton.styleFrom(
+                    backgroundColor: Colors.grey,
                     minimumSize: Size(60, 40),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
                   ),
-                  child: Text("cancel"),
+                  child: Text("Cancel"),
                 ),
               ],
             )

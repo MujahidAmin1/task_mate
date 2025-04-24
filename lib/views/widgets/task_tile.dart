@@ -50,6 +50,8 @@ class TaskTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(title!, style: kTextStyle(size: 25)),
+              const SizedBox(height: 5),
+              Text("Due Date: "),
               Text(DateFormatter.toOrdinalDate(createdTime!)),
               const SizedBox(height: 20),
               const Divider(),

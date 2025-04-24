@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart' hide AuthProvider;
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:task_mate/database/database.dart';
 import 'package:task_mate/models/task.dart';
-import 'package:task_mate/providers/auth_provider.dart';
+import 'package:task_mate/utils/kTextStyle.dart';
 import 'package:task_mate/utils/namedrouting.dart';
+import 'package:task_mate/views/screens/profile.dart';
 import 'package:task_mate/views/screens/task_detailed_screen.dart';
 import 'package:task_mate/views/widgets/modalsheet.dart';
 import 'package:task_mate/views/widgets/task_tile.dart';
@@ -39,7 +39,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     DatabaseService databaseService = DatabaseService();
     FirebaseAuth auth = FirebaseAuth.instance;
-    double screenWidth = MediaQuery.of(context).size.width;
     var username = databaseService.fetchUsername(auth.currentUser!.uid);
     return Scaffold(
       backgroundColor: Color(0xFF342e37),
@@ -54,16 +53,22 @@ class _MyHomePageState extends State<MyHomePage> {
             } else if (snapshot.hasError) {
               return const Text("Error");
             } else {
-              return Text(snapshot.data ?? "No username");
+              return Text('Hi, ${snapshot.data}');
             }
           },
         ),
         actions: [
-          TextButton(
-              onPressed: () {
-                context.read<AuthProvider>().logout(context);
-              },
-              child: Text("logout"))
+          GestureDetector(
+            onTap: () => kNavigate(context, Profile()),
+            child: Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: CircleAvatar(
+                backgroundColor: Color(0xFFA2D729),
+                radius: 15,
+                child: Icon(Icons.person_2_outlined),
+              ),
+            ),
+          ),
         ],
       ),
       body: StreamBuilder<List<Task>>(
@@ -82,10 +87,15 @@ class _MyHomePageState extends State<MyHomePage> {
           List<Task> tasks = snapshot.data!;
           List<SubTask> allSubTasks = tasks
               .where((task) => task.subTasks != null)
-              .expand((task) => task.subTasks!).where((e)=>e.isCompleted ==true)
+              .expand((task) => task.subTasks!.reversed)
+              .where((e) => e.isCompleted == true)
               .toList();
           return ListView(
+            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
             children: [
+              Text(" Incompleted Tasks (${tasks.length})",
+                  style: kTextStyle(color: Colors.white)),
+              const SizedBox(height: 10),
               SizedBox(
                 height: 270,
                 child: ListView.builder(
@@ -110,8 +120,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                 ),
               ),
+              const SizedBox(height: 20),
+              Text(" Completed Tasks (${allSubTasks.length})",
+                  style: kTextStyle(color: Colors.white)),
+              const SizedBox(height: 12),
               SizedBox(
-                height: 400,
+                height: 600,
                 child: ListView.builder(
                   itemCount: allSubTasks.length,
                   itemBuilder: (context, index) {
@@ -127,23 +141,26 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
       floatingActionButton: FilledButton(
-        onPressed: () {
-          showModalBottomSheet(
-              elevation: 3,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-              ),
-              context: context,
-              builder: (context) {
-                return CustomModalSheet(
-                  titlecontroller: titleController,
-                  taskcontroller: taskDetailController,
-                  dateTimecontroller: createdTimeController,
-                );
-              });
-        },
-        child: Text("Add task"),
-      ),
+          onPressed: () {
+            showModalBottomSheet(
+                elevation: 3,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                ),
+                context: context,
+                builder: (context) {
+                  return CustomModalSheet(
+                    titlecontroller: titleController,
+                    taskcontroller: taskDetailController,
+                    dateTimecontroller: createdTimeController,
+                  );
+                });
+          },
+          style: FilledButton.styleFrom(
+            backgroundColor: Color(0xFFA2D729),
+            minimumSize: Size(70, 40),
+          ),
+          child: Text("Add task", style: TextStyle(color: Colors.black))),
     );
   }
 }

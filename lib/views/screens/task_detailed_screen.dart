@@ -83,7 +83,7 @@ class _TaskDetailedScreenState extends State<TaskDetailedScreen> {
             delegate: SliverChildListDelegate([
               const SizedBox(height: 10),
               ...subtasks.map((subtask) => Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
                     child: SubTaskTile(
                       subtask: subtask,
                       onChanged: (bool? value) async {
@@ -99,7 +99,10 @@ class _TaskDetailedScreenState extends State<TaskDetailedScreen> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xFFA2D729),
+        child: Icon(Icons.add),
+        onPressed: () {
         showModalBottomSheet(
           context: context,
           shape: const RoundedRectangleBorder(
