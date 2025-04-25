@@ -85,6 +85,8 @@ class _MyHomePageState extends State<MyHomePage> {
             return const Center(child: Text('No Tasks available.'));
           }
           List<Task> tasks = snapshot.data!;
+          List<SubTask> subtasks =
+              tasks.expand((task) => task.subTasks!).toList();
           List<SubTask> allSubTasks = tasks
               .where((task) => task.subTasks != null)
               .expand((task) => task.subTasks!.reversed)
@@ -112,6 +114,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         );
                       },
                       child: TaskTile(
+                        allProgress: tasks[index].subTasks!.length,
+                        completedProgress: tasks[index].subTasks!.where((subtask)=> subtask.isCompleted == true).length,
                         title: tasks[index].title,
                         taskDetail: tasks[index].taskDetail,
                         createdTime: tasks[index].dateCreated,

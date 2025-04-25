@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:task_mate/models/task.dart';
 import 'package:task_mate/utils/kTextStyle.dart';
 import 'package:task_mate/utils/date_formatter.dart';
@@ -10,6 +11,7 @@ final random = Random();
 Color getRandomColor() {
   return colorOptions[random.nextInt(colorOptions.length)];
 }
+
 final List<Color> colorOptions = [
   Color(0xFF3C91E6), // Sky Blue
   Color(0xFFA2D729), // Bright Green
@@ -24,8 +26,12 @@ class TaskTile extends StatelessWidget {
   final String? title;
   final String? taskDetail;
   final DateTime? createdTime;
-  const TaskTile(
+  int? allProgress;
+  int? completedProgress;
+  TaskTile(
       {super.key,
+      this.allProgress,
+      this.completedProgress,
       required this.title,
       required this.taskDetail,
       required this.createdTime});
@@ -47,17 +53,26 @@ class TaskTile extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(title!, style: kTextStyle(size: 25)),
-              const SizedBox(height: 5),
               Text("Due Date: "),
               Text(DateFormatter.toOrdinalDate(createdTime!)),
-              const SizedBox(height: 20),
               const Divider(),
               const Text("Description: "),
-              const SizedBox(height: 10),
               Text(taskDetail!),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Progress: "),
+                  CircularPercentIndicator(
+                    percent: ((completedProgress! / allProgress!) * 100) / 100,
+                    progressColor: Colors.black87,
+                    radius: 12,
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -98,9 +113,10 @@ class SubTaskTile extends StatelessWidget {
                 child: Text(
                   subtask!.taskDetail!,
                   style: TextStyle(
-                    fontSize: 20,
-                    decoration: subtask!.isCompleted! ? TextDecoration.lineThrough : null
-                  ),
+                      fontSize: 20,
+                      decoration: subtask!.isCompleted!
+                          ? TextDecoration.lineThrough
+                          : null),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -111,7 +127,6 @@ class SubTaskTile extends StatelessWidget {
                 checkColor: Color(0xFF342e37), // inside checkmark color
                 shape: CircleBorder(),
                 splashRadius: 20,
-                
               ),
             ],
           ),

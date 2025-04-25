@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  board_datetime_picker: ^2.5.0
   cloud_firestore: ^5.6.6
   cupertino_icons: ^1.0.8
   firebase_auth: ^5.5.1
@@ -35,9 +36,9 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_datetime_picker_plus: ^2.2.0
-  board_datetime_picker: ^2.5.0
   google_fonts: ^6.2.1
   intl: ^0.20.2
+  percent_indicator: ^4.2.5
   provider: ^6.1.4
 
 dev_dependencies:
