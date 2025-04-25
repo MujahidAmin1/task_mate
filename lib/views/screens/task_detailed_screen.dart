@@ -82,7 +82,7 @@ class _TaskDetailedScreenState extends State<TaskDetailedScreen> {
           SliverList(
             delegate: SliverChildListDelegate([
               const SizedBox(height: 10),
-              ...subtasks.map((subtask) => Padding(
+              ...widget.task!.subTasks!.map((subtask) => Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
                     child: SubTaskTile(
                       subtask: subtask,

@@ -91,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
               .where((e) => e.isCompleted == true)
               .toList();
           return ListView(
-            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             children: [
               Text(" Incompleted Tasks (${tasks.length})",
                   style: kTextStyle(color: Colors.white)),
@@ -125,8 +125,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: kTextStyle(color: Colors.white)),
               const SizedBox(height: 12),
               SizedBox(
-                height: 600,
                 child: ListView.builder(
+                  shrinkWrap: true,
                   itemCount: allSubTasks.length,
                   itemBuilder: (context, index) {
                     return SubTaskTile(
