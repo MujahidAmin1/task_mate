@@ -29,6 +29,7 @@ class Profile extends StatelessWidget {
                 children: [
                   Center(
                     child: CircleAvatar(
+                      backgroundColor: Color(0xFFA2D729),
                       radius: 40,
                       child: Text(user.substring(0, 1),
                           style: kTextStyle(size: 35, isBold: true)),
@@ -48,6 +49,7 @@ class Profile extends StatelessWidget {
             }
           }),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xFFA2D729),
           onPressed: () {
             showDialog(
               context: context,

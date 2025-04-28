@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart' hide AuthProvider;
 import 'package:flutter/material.dart';
 import 'package:task_mate/database/database.dart';
@@ -71,18 +73,25 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      body: StreamBuilder<List<Task>>(
-        stream: databaseService.readTasks(),
+      body: StreamBuilder<List<Task>?>(
+        stream: databaseService.readTasks(auth.currentUser!.uid),
         builder: (context, snapshot) {
+          
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(
+                child: Text(
+             snapshot.error!.toString(),
+              style: kTextStyle(color: Colors.white),
+            ));
           }
 
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No Tasks available.'));
+          if (!snapshot.hasData ||
+              snapshot.data!.isEmpty) {
+                
+            return Center(child: Text('No Tasks available'));
           }
           List<Task> tasks = snapshot.data!;
           List<SubTask> subtasks =
@@ -115,7 +124,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                       child: TaskTile(
                         allProgress: tasks[index].subTasks!.length,
-                        completedProgress: tasks[index].subTasks!.where((subtask)=> subtask.isCompleted == true).length,
+                        completedProgress: tasks[index]
+                            .subTasks!
+                            .where((subtask) => subtask.isCompleted == true)
+                            .length,
                         title: tasks[index].title,
                         taskDetail: tasks[index].taskDetail,
                         createdTime: tasks[index].dateCreated,

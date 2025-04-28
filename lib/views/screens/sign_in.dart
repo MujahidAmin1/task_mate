@@ -28,37 +28,58 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: Color(0xFF342e37),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
               const SizedBox(height: 120),
-              Text("Sign in", style: kTextStyle(size: 40)),
+              Text("Sign in",
+                  style: kTextStyle(size: 40, color: Color(0xFFfafffd))),
+              const SizedBox(height: 25),
               TextField(
-                cursorColor: Color(0xFF565264),
+                cursorColor: Color(0xFFA2D729),
                 controller: emailController,
+                style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                    labelText: 'Email',
-                    focusColor: Color(0xFF565264),
-                    hintText: 'example123@gmail.com',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    )),
+                  labelText: 'Email',
+                  labelStyle: TextStyle(color: Color(0xFFA2D729)),
+                  hintText: 'example123@gmail.com',
+                  hintStyle: TextStyle(color: Color(0xFFfafffd)),
+                  focusColor: Color(0xFFA2D729),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFFfafffd)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFFA2D729), width: 2),
+                  ),
+                ),
               ),
               const SizedBox(height: 15),
               TextField(
+                style: TextStyle(color: Colors.white),
                 controller: passwordController,
-                cursorColor: Color(0xFF565264),
+                cursorColor: Color(0xFFA2D729),
                 decoration: InputDecoration(
-                  focusColor: Color(0xFF565264),
-                    labelText: 'Password',
-                    hintText: 'xxxxxx',
-                    border: OutlineInputBorder(
-                      
-                      borderRadius: BorderRadius.circular(6),
-                    )),
+                  labelText: 'Password',
+                  labelStyle: TextStyle(color: Color(0xFFA2D729)),
+                  hintText: 'xxxxxx',
+                  hintStyle: TextStyle(color: Color(0xFFfafffd)),
+                  focusColor: Color(0xFFA2D729),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6),
+                    borderSide: BorderSide(color: Color(0xFFfafffd)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6),
+                    borderSide: BorderSide(color: Color(0xFFA2D729), width: 2),
+                  ),
+                ),
               ),
               const SizedBox(height: 15),
               ElevatedButton(
@@ -70,19 +91,20 @@ class _SignInPageState extends State<SignInPage> {
                       );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF071E22),
-                  minimumSize: Size(400, 40),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5)
-                  )
+                    backgroundColor: Color(0xFFA2D729),
+                    minimumSize: Size(width, 49),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5))),
+                child: Text(
+                  "Sign in",
+                  style: kTextStyle(color: Colors.white),
                 ),
-                child: Text("Sign in", style: kTextStyle(color: Colors.white),),
               ),
               const SizedBox(height: 10),
               RichText(
                 text: TextSpan(
                   text: "Dont have an account? ",
-                  style: kTextStyle(size: 15, color: Colors.black),
+                  style: kTextStyle(size: 15, color: Color(0xFFfafffd)),
                   children: [
                     TextSpan(
                       text: "Sign Up",

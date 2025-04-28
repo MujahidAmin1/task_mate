@@ -30,21 +30,18 @@ class DatabaseService {
     });
   }
 
-  Stream<List<Task>> readTasks() {
+  Stream<List<Task>> readTasks(String uid) {
     try {
       if (_auth.currentUser == null) {
         return Stream.value([]);
       }
-      final tasks = FirebaseFirestore.instance.collection("tasks");
-      return tasks.orderBy("dateCreated", descending: true).snapshots().map(
-            (snapshot) => snapshot.docs
-                .map(
-                  (doc) => Task.fromMap(
-                    doc.data(),
-                  ),
-                )
-                .toList(),
-          );
+      final taskDoc = FirebaseFirestore.instance
+          .collection("tasks")
+          .where('id', isEqualTo: uid);
+
+        return taskDoc.snapshots().map((snap) =>
+            snap.docs.map((doc) => Task.fromMap(doc.data())).toList());
+      
     } on Exception catch (e) {
       throw Exception(e);
     }
