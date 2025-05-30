@@ -1,18 +1,18 @@
 # 📝 Task Manager App
 
-A powerful and intuitive Task Management App built with **Flutter** using **Provider** for efficient state management. This app is designed to help users manage their daily tasks, organize subtasks, and view task details in a clean Material 3 UI.
+A powerful and intuitive Task Management App built with **Flutter** using **Provider** for efficient state management and **Firebase** for backend. This app is designed to help users manage their daily tasks, organize subtasks, and view task details in a clean Material 3 UI.
 
 ## 🚀 Features
 
 - 📋 **Task Creation**: Add tasks with detailed descriptions.
-- 📅 **Date Management**: Tasks are timestamped with `dateCreated` for sorting and tracking.
-- 🧩 **Subtasks**: Organize each task into multiple subtasks.
-- 🔍 **Detailed View**: View and edit task info via the `TaskDetailedScreen`.
-- 🎨 **Material 3 Design**: Clean, modern UI using Material You.
-- ⚙️ **State Management**: Efficiently managed using `Provider`.
-- 🦴 **Skeleton Loading**: Improved user experience using the `skeletonizer` package.
-- 🧭 **Navigation**: Smooth routing across screens using Flutter’s navigation system.
-- 🧪 **Emulator Ready**: Debug-friendly and tested on emulators.
+- 📅 **Date Management**: Automatically timestamped with `dateCreated`.
+- 🧩 **Subtasks**: Break down tasks into manageable subtasks.
+- 🔍 **Detailed View**: Edit/view tasks with full details.
+- 🔁 **Real-time Sync**: Cloud sync via Firebase Firestore.
+- 🔐 **User Auth**: Secure login and account management.
+- 🎨 **Material 3 Design**: Clean, modern UI.
+- ⚙️ **State Management**: Powered by `Provider`.
+- 🦴 **Skeleton Loading**: Smooth UI transitions with `skeletonizer`.
 
 ![todo](https://github.com/user-attachments/assets/b8ffc73c-72f8-4d95-9c99-f3bc4f038fc7)
 
