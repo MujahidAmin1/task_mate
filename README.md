@@ -1,16 +1,33 @@
-# notify
+# 📝 Task Manager App
 
-A new Flutter project.
+A powerful and intuitive Task Management App built with **Flutter** using **Provider** for efficient state management. This app is designed to help users manage their daily tasks, organize subtasks, and view task details in a clean Material 3 UI.
 
-## Getting Started
+## 🚀 Features
 
-This project is a starting point for a Flutter application.
+- 📋 **Task Creation**: Add tasks with detailed descriptions.
+- 📅 **Date Management**: Tasks are timestamped with `dateCreated` for sorting and tracking.
+- 🧩 **Subtasks**: Organize each task into multiple subtasks.
+- 🔍 **Detailed View**: View and edit task info via the `TaskDetailedScreen`.
+- 🎨 **Material 3 Design**: Clean, modern UI using Material You.
+- ⚙️ **State Management**: Efficiently managed using `Provider`.
+- 🦴 **Skeleton Loading**: Improved user experience using the `skeletonizer` package.
+- 🧭 **Navigation**: Smooth routing across screens using Flutter’s navigation system.
+- 🧪 **Emulator Ready**: Debug-friendly and tested on emulators.
+![todo](https://github.com/user-attachments/assets/b8ffc73c-72f8-4d95-9c99-f3bc4f038fc7)
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 📦 Project Structure
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```plaintext
+lib/
+├── models/
+│   └── task.dart              # Task model with id, title, detail, subtasks, etc.
+├── providers/
+│   └── task_provider.dart     # State management using Provider
+├── screens/
+│   ├── home_screen.dart       # Task list overview
+│   └── task_detailed_screen.dart  # View/edit individual tasks
+├── widgets/
+│   └── task_tile.dart         # Reusable task display widget
+└── main.dart                  # App entry point
+
