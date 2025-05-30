@@ -13,6 +13,7 @@ A powerful and intuitive Task Management App built with **Flutter** using **Prov
 - 🦴 **Skeleton Loading**: Improved user experience using the `skeletonizer` package.
 - 🧭 **Navigation**: Smooth routing across screens using Flutter’s navigation system.
 - 🧪 **Emulator Ready**: Debug-friendly and tested on emulators.
+
 ![todo](https://github.com/user-attachments/assets/b8ffc73c-72f8-4d95-9c99-f3bc4f038fc7)
 
 
