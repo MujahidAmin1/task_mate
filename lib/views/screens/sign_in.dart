@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:task_mate/auth/auth.dart';
+import 'package:task_mate/services/auth/auth.dart';
 import 'package:task_mate/providers/auth_provider.dart';
 import 'package:task_mate/utils/kTextStyle.dart';
 import 'package:task_mate/utils/namedrouting.dart';

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_mate/firebase_options.dart';
 import 'package:task_mate/providers/auth_provider.dart';
+import 'package:task_mate/views/screens/sign_in.dart';
 import 'package:task_mate/views/screens/signup.dart';
 
 import 'views/screens/home.dart';
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
             if (snapshot.hasData) {
               return const MyHomePage();
             }
-            return const SignupPage();
+            return const SignInPage();
           }),
     );
   }

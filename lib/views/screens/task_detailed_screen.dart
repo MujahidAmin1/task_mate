@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:task_mate/database/database.dart';
+import 'package:task_mate/services/database/database.dart';
 import 'package:task_mate/models/task.dart';
 import 'package:task_mate/utils/date_formatter.dart';
 import 'package:task_mate/utils/kTextStyle.dart';

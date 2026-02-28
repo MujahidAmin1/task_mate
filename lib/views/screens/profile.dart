@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart' hide AuthProvider;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:task_mate/database/database.dart';
+import 'package:task_mate/services/database/database.dart';
 import 'package:task_mate/providers/auth_provider.dart';
 import 'package:task_mate/utils/kTextStyle.dart';
 

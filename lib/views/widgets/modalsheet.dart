@@ -3,8 +3,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:task_mate/auth/auth.dart';
-import 'package:task_mate/database/database.dart';
+import 'package:task_mate/services/auth/auth.dart';
+import 'package:task_mate/services/database/database.dart';
 import 'package:task_mate/models/task.dart';
 import 'package:task_mate/utils/kTextStyle.dart';
 import 'package:task_mate/views/screens/home.dart';

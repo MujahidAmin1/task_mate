@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart' hide User;
-import 'package:task_mate/database/database.dart';
+import 'package:task_mate/services/database/database.dart';
 
 class AuthServices {
   final FirebaseAuth _auth = FirebaseAuth.instance;

@@ -1,9 +1,9 @@
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart' hide AuthProvider;
 import 'package:flutter/material.dart';
-import 'package:task_mate/database/database.dart';
+import 'package:provider/provider.dart';
+import 'package:task_mate/services/database/database.dart';
 import 'package:task_mate/models/task.dart';
+import 'package:task_mate/providers/auth_provider.dart';
 import 'package:task_mate/utils/kTextStyle.dart';
 import 'package:task_mate/utils/namedrouting.dart';
 import 'package:task_mate/views/screens/profile.dart';
@@ -76,21 +76,18 @@ class _MyHomePageState extends State<MyHomePage> {
       body: StreamBuilder<List<Task>?>(
         stream: databaseService.readTasks(auth.currentUser!.uid),
         builder: (context, snapshot) {
-          
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
             return Center(
                 child: Text(
-             snapshot.error!.toString(),
+              snapshot.error!.toString(),
               style: kTextStyle(color: Colors.white),
             ));
           }
 
-          if (!snapshot.hasData ||
-              snapshot.data!.isEmpty) {
-                
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text('No Tasks available'));
           }
           List<Task> tasks = snapshot.data!;
@@ -114,6 +111,62 @@ class _MyHomePageState extends State<MyHomePage> {
                   itemCount: tasks.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
+                      onLongPress: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            backgroundColor: Color(0xFF342e37),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            title: Text(
+                              'Delete',
+                              style: TextStyle(
+                                color: Color(0xFFfafffd),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
+                            content: Text(
+                              'Are you sure you want to delete?',
+                              style: TextStyle(
+                                color: Color(0xD9fafffd),
+                                fontSize: 16,
+                              ),
+                            ),
+                            actionsPadding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 10),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  'Cancel',
+                                  style: TextStyle(
+                                    color: Color(0xFFA2D729),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              FilledButton(
+                                onPressed: () {
+                                  databaseService.deleteTask(tasks[index]);
+                                  Navigator.pop(context);
+                                },
+                                style: FilledButton.styleFrom(
+                                  backgroundColor: Color(0xFFA2D729),
+                                  foregroundColor: Color(0xFF342e37),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                child: Text('Delete'),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                       onTap: () {
                         kNavigate(
                           context,

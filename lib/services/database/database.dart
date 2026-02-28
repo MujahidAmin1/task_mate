@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:task_mate/models/user.dart';
 
-import '../models/task.dart';
+import '../../models/task.dart';
 
 class DatabaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -33,7 +33,7 @@ class DatabaseService {
   Stream<List<Task>> readTasks(String uid) {
     try {
       if (_auth.currentUser == null) {
-        return Stream.value([]);
+        return Stream.value([]); 
       }
       final taskDoc = FirebaseFirestore.instance
           .collection("tasks")
